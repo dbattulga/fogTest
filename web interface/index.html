@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #3f6096;
+    color: white;
+}
+
+div {
+    width: 500px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+setInterval(ajaxCall, 2000)
+
+function ajaxCall() {
+    $.ajax({
+        url: "filereader.php",
+	type: "post",
+        async: false,
+        cache: false,   // force the browser to not make cache of the retrieved data
+        dataType: "text",
+        success: function(data) {
+            var content = data;
+	    var list = content.split(/\W+/);
+
+	    var table = "<table>";
+	    table += '<tr> <th>Rank</th> <th>Word</th> <th>Count</th> </tr>';
+	    
+	    var rank = 1;
+	    for(i=1; i<list.length-1; i++){
+		table += '<tr><td>'+rank+'</td><td>'+list[i]+'</td><td>'+list[i+1]+'</td></tr>';
+		i += 1;
+		rank += 1;
+	    }
+	    table += "</table>";
+
+	    $('#target').html(table);
+        }
+    });
+}
+
+
+</script>
+</head>
+<body>
+
+<div id="target"></div>
+
+</body>
+</html>
